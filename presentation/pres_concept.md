@@ -8,7 +8,7 @@
 ## Dataset
 
 - Dataset structure - features briefly
-- Our target - 'Survived?' (binary 0/1)
+- Our target - *Survived?* (binary 0/1)
 
 ## Data preprocessing
 
@@ -42,6 +42,7 @@
 - RFE (Recursive Feature Elimination) with LR, RFC -> selected optimal feature
 - Graphs
 - Describe again selected features
+- Why finally selected *Fare* over *SibSp*?
 
 ## Feature extraction
 
