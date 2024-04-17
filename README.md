@@ -41,7 +41,7 @@ On the other hand, the test set serves a distinct purpose. It serves as a litmus
   - Q: Queenstown
   - S: Southampton
 
-### Libraries Used:
+## Libraries Used:
 - **pandas**: For data manipulation and analysis. It provides data structures and functions to work with structured data, such as data frames.
 - **numpy**: Numerical computing in Python. It provides support for large, multi-dimensional arrays and matrices, along with a collection of mathematical functions to operate on these arrays efficiently
 - **MinMaxScaler, StandardScaler, OneHotEncoder, LabelEncoder** from sklearn.preprocessing : This submodule of scikit-learn provides various functions for preprocessing data before feeding it into machine learning algorithms.
@@ -64,7 +64,16 @@ On the other hand, the test set serves a distinct purpose. It serves as a litmus
 - **StratifiedKFold** from sklearn.model_selection: Provides stratified folds for cross-validation, ensuring that each fold contains approximately the same proportion of classes as the original dataset.
 - **RandomForestClassifier** from sklearn.ensemble: A machine learning algorithm that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.
 
-### Brief descrition of what was done in the project
+## Installation of Libraries
+Pip freeze: You can install the dependencies by running the following commnd in your terminal.
+
+$ pip install -r Requirements.txt 
+
+or 
+
+$ pip freeze > Requirements.txt
+
+## Brief descrition of what was done in the project
 - **Data Loading**: Loaded the Titanic dataset consisting of passenger information such as survival status, ticket class, gender, age, family relations, ticket details, fare, cabin number, and port of embarkation.
 
 - **Data Preprocessing**:
