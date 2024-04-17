@@ -65,7 +65,7 @@ On the other hand, the test set serves a distinct purpose. It serves as a litmus
 - **RandomForestClassifier** from sklearn.ensemble: A machine learning algorithm that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.
 
 ## Installation of Libraries
-Pip freeze: You can install the dependencies by running the following commnd in your terminal.
+**Pip freeze**: You can install the dependencies by running the following command in your terminal.
 
 $ pip install -r Requirements.txt 
 
