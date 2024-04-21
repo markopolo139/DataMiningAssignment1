@@ -1,0 +1,173 @@
+---
+title: "Titanic"
+author: ' Mateusz Bernart, Patryk Janiak, Patrick Molina, Marek Seget, Chihab Zitouni'
+date: "2024-04-20"
+output:
+  pdf_document: default
+  ioslides_presentation: default
+---
+
+```{r "libs", echo=F, message=F}
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(tidyr)
+data <- read.csv2("../data/train.csv", dec = ".", sep = ",", header = TRUE)
+```
+
+# Problem introduction
+
+## Introduction
+
+- What is the **Titanic dataset** about?
+- The goal: predicting survival on Titanic passengers using classifiers and feature selection
+
+```{r "Sex freq", fig.align="center", fig.height=4, messages=F, echo=F}
+# ggplot pie chart of survived
+freq_data <- data.frame(table(data$Survived))
+
+ggplot(freq_data, aes(x = "", y = Freq, fill = Var1)) +
+    geom_bar(stat = "identity", width = 1) +
+    coord_polar("y", start = 0) +
+    guides(fill = guide_legend(title = "Survived")) +
+    theme_minimal()
+```
+
+## Dataset
+
+- Dataset structure
+
+```{r "Raw dataset", echo=F}
+sample_of_the_train_set <- data %>%
+    # filter(Cabin > 0) %>%
+    select(c(
+        PassengerId, Pclass, Sex, Age,
+        SibSp, Parch, Cabin, Fare, Survived
+    ))
+kable(head(sample_of_the_train_set, 5))
+```
+<sub>*Omited **Name**, **Ticket** and **Embarked** features for visual reason* </sub>
+
+## Target 
+
+- Our target - *Survived?* (binary 0/1)
+
+```{r "sex and survive", fig.align="center", message=F, echo=F}
+# A plot of survival ration per gender
+ggplot(data, aes(x = Sex, fill = factor(Survived))) +
+    geom_bar(position = "dodge") +
+    scale_fill_manual(values = c("red", "blue")) +
+    guides(fill = guide_legend(title = "Survived")) +
+    theme_minimal()
+```
+
+# Solving the problem
+
+## Data preprocessing
+- Missing values:
+    - Dropped irrelevant columns
+
+- Encoding - Sex + Embarked (categorical -> numeric)
+
+
+
+## Comparison of classifiers before preprocessing
+
+```{r "Classifiers before preprocessing", fig.align="center", message=F, echo=F}
+scores <- data.frame(
+    score = c(64.35, 91.36, 80.36),
+    classifier = c("SVC", "LRC", "RFC"))
+
+ggplot(scores, aes(x=classifier, y=score)) +
+    geom_bar(stat="identity", fill="skyblue", width=0.2) +
+    geom_text(aes(label=paste0(score, "%")), vjust=-0.5, size=3.5, color="black") +
+    labs(title="Classifier Scores", x="Classifier", y="Accuracy") +
+    ylim(c(0, 100)) +
+    theme_minimal()
+```
+
+## Preprocessing techniques
+
+- Normalization: `MinMaxScaler`
+- Standardization: `StandardScaler`
+
+```{r "Data after preprocessing", fig.align="center", echo=F}
+df <- data.frame(data  %>%
+    filter(F) %>%
+    select(c(
+        Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked
+    )))
+
+df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.577094,
+                        0.522511, -0.506787, 0.694046, -2.049487)
+df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.577094,
+                        .522511, -0.506787, 0.694046, -2.049487)
+df[nrow(df) + 1, ] <- c(1, 0.908600, 1.322511, -0.251478,
+                        0.552714,-0.506787, -0.503620, 0.519588)
+df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.369951,
+                        0.522511,-0.506787, 0.350326, 0.519588)
+df[nrow(df) + 1, ] <- c(0, 0.908600, -0.756138, 0.369951,
+                        -0.552714,-0.506787, -0.501257, 0.519588)
+df[nrow(df) + 1, ] <- c(0, -1.482983, -0.756138, 1.681856,
+                        -0.552714, -0.506787, 0.326933, 0.519588)
+
+kable(head(df, 5))
+```
+
+## Feature Selection
+
+- RFE (Recursive Feature Elimination) with LR, RFC
+- Selected features:
+    - for LR: **Pclass**, **Sex**, **Age**, **SibSp**
+    - for RFC: **Pclass**, **Sex**, **Age**, **Fare**
+    
+```{r "Feature selection graphs", echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', fig.cap=" "}
+knitr::include_graphics(
+  c("./lr_number_of_features.png",
+    "./rf_number_of_features.png")
+)
+```
+
+## Feature extraction
+
+- PCA (Principal Component Analysis)
+```
+[[ 1.03979617, -0.8338755 ,  0.39574407, -0.124945  ],
+    [-0.8159031 ,  1.9567542 ,  0.23809646, -0.0552459 ],
+    [ 0.48443562,  0.35598023, -1.52130571, -0.51725331],
+    ...,
+    [-0.44638046,  1.59476638, -0.76656293,  1.20977618],
+    [-0.94330883, -0.02518358,  0.51553682,  1.40835751],
+    [ 0.03490097, -1.26169953, -0.25152961, -0.27004702]]
+```
+- Selected: **Pclass**, **Sex**, **Age**, **SibSp**
+
+## Classifiers comparison after selecting and extracting features
+
+- SVC, RFC, LR after actions
+
+
+```{r "Classifiers after preprocessing", fig.align="center", message=F, echo=F, fig.height=4, fig.width=8}
+scores <- data.frame(
+    score_before = c(64.35, 91.36, 80.36),
+    score = c(90.94, 85.20, 90.94),
+    classifier = c("SVC", "LRC", "RFC"))
+
+scores_long <- gather(scores, key = "type", value = "score", -classifier)
+scores_long$type <- factor(scores_long$type, levels = c("score_before", "score"))
+
+ggplot(scores_long, aes(x=classifier, y=score, fill=type)) +
+    geom_bar(stat="identity", position="dodge", width=0.5) +
+    geom_text(aes(label=paste0(score, "%"), y=score), position=position_dodge(width=0.5), vjust=-0.5, size=3.5, color="black") +
+    labs(title="Classifier Scores", x="Classifier", y="Accuracy") +
+    scale_fill_manual(values=c("score_before"="skyblue", "score"="lightgreen"), labels=c("Before", "After")) +
+    ylim(c(0, 100)) +
+    theme_minimal()
+```
+
+## Conclusion
+- Data preprocessing significantly improved classifier accuracy.
+- Feature selection techniques identified key predictors: Pclass, Sex, Age, and SibSp.
+- Feature extraction via PCA simplified models while retaining essential information.
+- Post-preprocessing, classifiers (SVC, RFC, LR) demonstrated improved performance.
