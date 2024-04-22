@@ -1,4 +1,5 @@
 # Data Mining Assignment 1
+Raport: https://www.overleaf.com/project/66041cfce4b96f622a7f4140
 ## Data Titanic - Machine Learning from Disaster
 The training set acts as the foundation for constructing the machine learning models. Within this set, we provide the 'ground truth' outcome for each passenger, which essentially means we disclose whether they survived or not. The model's development relies on a plethora of 'features,' such as passengers' gender, class, and potentially other characteristics like age or family size. Moreover, we have the flexibility to enhance our model's performance through feature engineering, a process where we create new, more informative features from the existing ones.
 
