@@ -148,10 +148,10 @@ knitr::include_graphics(
 - SVC, RFC, LR after actions
 
 
-```{r "Classifiers after preprocessing", fig.align="center", message=F, echo=F, fig.height=4, fig.width=8}
+```{r "Classifiers after preprocessing", fig.align="center", message=F, echo=F, fig.height=4, fig.width=8, warning=F}
 scores <- data.frame(
-    score_before = c(64.35, 91.36, 80.36),
-    score = c(90.94, 85.20, 90.94),
+    score_before = c(64.35, 91.24, 80.97),
+    score = c(90.94, 90.94, 87.01),
     classifier = c("SVC", "LRC", "RFC"))
 
 scores_long <- gather(scores, key = "type", value = "score", -classifier)
@@ -162,7 +162,6 @@ ggplot(scores_long, aes(x=classifier, y=score, fill=type)) +
     geom_text(aes(label=paste0(score, "%"), y=score), position=position_dodge(width=0.5), vjust=-0.5, size=3.5, color="black") +
     labs(title="Classifier Scores", x="Classifier", y="Accuracy") +
     scale_fill_manual(values=c("score_before"="skyblue", "score"="lightgreen"), labels=c("Before", "After")) +
-    ylim(c(0, 100)) +
     theme_minimal()
 ```
 
