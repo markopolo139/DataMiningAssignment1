@@ -15,7 +15,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.svm import SVC
 
-random_state = 156042
+random_state = 5673469
 
 def load_data():
     """
@@ -270,8 +270,7 @@ def features_selection_random_forrest(table_train):
     y_train = table_train['Survived']
 
     estimator = RandomForestClassifier(n_estimators=100, random_state=random_state)
-    rfecv = RFECV(estimator=estimator, step=1, random_stat=random_state
-                cv=StratifiedKFold(10), scoring='accuracy')
+    rfecv = RFECV(estimator=estimator, step=1, cv=StratifiedKFold(10), scoring='accuracy')
 
     rfecv.fit(X_train, y_train)
 
