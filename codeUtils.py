@@ -15,6 +15,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.svm import SVC
 
+random_state = 156042
+
 def load_data():
     """
     Load Titanic dataset from CSV files.
@@ -126,7 +128,7 @@ def test_accuracy_svc(x_train, y_train, x_test, y_test):
     Returns:
     None
     """
-    classifier = SVC()
+    classifier = SVC(random_state=random_state)
     classifier.fit(x_train, y_train)
     y_pred = classifier.predict(x_test)
     print(classification_report(y_test, y_pred))
@@ -148,7 +150,7 @@ def test_accuracy_random_forrest(x_train, y_train, x_test, y_test):
     Returns:
     None
     """
-    classifier = RandomForestClassifier()
+    classifier = RandomForestClassifier(random_state=random_state)
     classifier.fit(x_train, y_train)
     y_pred = classifier.predict(x_test)
     print(classification_report(y_test, y_pred))
@@ -170,7 +172,7 @@ def test_accuracy_logistic_regression(x_train, y_train, x_test, y_test):
     Returns:
     None
     """
-    classifier = LogisticRegression()
+    classifier = LogisticRegression(random_state=random_state)
     classifier.fit(x_train, y_train)
     y_pred = classifier.predict(x_test)
     print(classification_report(y_test, y_pred))
@@ -224,7 +226,7 @@ def features_selection_logistic_regression(table_train):
     X_train = table_train.drop(columns=['Survived'])
     y_train = table_train['Survived']
     number_of_features = range(1, len(X_train.columns) + 1)
-    estimator = LogisticRegression()
+    estimator = LogisticRegression(random_state=random_state)
     scores = []
     selected_features_list = []
 
@@ -267,8 +269,8 @@ def features_selection_random_forrest(table_train):
     X_train = table_train.drop(columns=['Survived'])
     y_train = table_train['Survived']
 
-    estimator = RandomForestClassifier(n_estimators=100)
-    rfecv = RFECV(estimator=estimator, step=1,
+    estimator = RandomForestClassifier(n_estimators=100, random_state=random_state)
+    rfecv = RFECV(estimator=estimator, step=1, random_stat=random_state
                 cv=StratifiedKFold(10), scoring='accuracy')
 
     rfecv.fit(X_train, y_train)
