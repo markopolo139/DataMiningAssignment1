@@ -58,8 +58,7 @@ def drop_na_rows(table):
     Returns:
     None
     """
-    for col in table.columns:
-        table.dropna(inplace=True)
+    table.dropna(inplace=True)
 
 
 
@@ -90,7 +89,20 @@ def convert_embarked_into_numbers(table):
     label_encoder = LabelEncoder()
     table['Embarked'] = label_encoder.fit_transform(table['Embarked'])
 
+def preprocess_numerical_columns(table, numerical_cols):
+    """
+    Preprocess numerical columns by removing rows with invalid values.
 
+    Parameters:
+    table (DataFrame): DataFrame containing the data.
+    numerical_cols (list): List of numerical column names.
+
+    Returns:
+    None
+    """
+    for col in numerical_cols:
+        table[col] = pd.to_numeric(table[col], errors='coerce')
+    table.dropna(subset=numerical_cols, inplace=True)
 
 def get_data_for_classification(train_data, test_data):
     """
