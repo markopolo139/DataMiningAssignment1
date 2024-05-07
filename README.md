@@ -72,7 +72,7 @@ $ pip install -r Requirements.txt
 
 or 
 
-$ pip freeze > Requirements.txt
+$ pip freeze > Requirements.txt to get the requirements and later above command
 
 ## Brief descrition of what was done in the project
 - **Data Loading**: Loaded the Titanic dataset consisting of passenger information such as survival status, ticket class, gender, age, family relations, ticket details, fare, cabin number, and port of embarkation.

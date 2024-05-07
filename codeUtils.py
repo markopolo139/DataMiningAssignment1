@@ -188,7 +188,7 @@ def test_accuracy_logistic_regression(x_train, y_train, x_test, y_test):
     Returns:
     None
     """
-    classifier = LogisticRegression(random_state=random_state)
+    classifier = LogisticRegression(random_state=random_state, solver="sag")
     classifier.fit(x_train, y_train)
     y_pred = classifier.predict(x_test)
     print(classification_report(y_test, y_pred))
