@@ -1,10 +1,8 @@
 ---
 title: "Titanic"
-author: ' Mateusz Bernart, Patryk Janiak, Patrick Molina, Marek Seget, Chihab Zitouni'
+author: ' Mateusz Bernart, Patryk Janiak, Patrick Molina, Marek Seget, ChihaEddine Zitouni'
 date: "2024-04-20"
-output:
-  pdf_document: default
-  ioslides_presentation: default
+output: ioslides_presentation
 ---
 
 ```{r "libs", echo=F, message=F}
