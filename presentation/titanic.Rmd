@@ -74,41 +74,56 @@ ggplot(data, aes(x = Sex, fill = factor(Survived))) +
 
 ```{r "Classifiers before preprocessing", fig.align="center", message=F, echo=F}
 scores <- data.frame(
-    score = c(64.35, 91.36, 80.36),
-    classifier = c("SVC", "LRC", "RFC"))
+    score = c(64.35, 65.65, 80.36),
+    classifier = c("SVC", "LRC", "RFC")
+)
 
-ggplot(scores, aes(x=classifier, y=score)) +
-    geom_bar(stat="identity", fill="skyblue", width=0.2) +
-    geom_text(aes(label=paste0(score, "%")), vjust=-0.5, size=3.5, color="black") +
-    labs(title="Classifier Scores", x="Classifier", y="Accuracy") +
+ggplot(scores, aes(x = classifier, y = score)) +
+    geom_bar(stat = "identity", fill = "skyblue", width = 0.2) +
+    geom_text(aes(label = paste0(score, "%")),
+        vjust = -0.5, size = 3.5,
+        color = "black"
+    ) +
+    labs(title = "Classifier Scores", x = "Classifier", y = "Accuracy") +
     ylim(c(0, 100)) +
     theme_minimal()
 ```
 
 ## Preprocessing techniques
 
-- Normalization: `MinMaxScaler`
 - Standardization: `StandardScaler`
 
 ```{r "Data after preprocessing", fig.align="center", echo=F}
-df <- data.frame(data  %>%
-    filter(F) %>%
+df <- data.frame(data %>%
+    filter(FALSE) %>%
     select(c(
         Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked
     )))
 
-df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.577094,
-                        0.522511, -0.506787, 0.694046, -2.049487)
-df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.577094,
-                        .522511, -0.506787, 0.694046, -2.049487)
-df[nrow(df) + 1, ] <- c(1, 0.908600, 1.322511, -0.251478,
-                        0.552714,-0.506787, -0.503620, 0.519588)
-df[nrow(df) + 1, ] <- c(1, -1.482983, 1.322511, 0.369951,
-                        0.522511,-0.506787, 0.350326, 0.519588)
-df[nrow(df) + 1, ] <- c(0, 0.908600, -0.756138, 0.369951,
-                        -0.552714,-0.506787, -0.501257, 0.519588)
-df[nrow(df) + 1, ] <- c(0, -1.482983, -0.756138, 1.681856,
-                        -0.552714, -0.506787, 0.326933, 0.519588)
+df[nrow(df) + 1, ] <- c(
+    1, -1.482983, 1.322511, 0.577094,
+    0.522511, -0.506787, 0.694046, -2.049487
+)
+df[nrow(df) + 1, ] <- c(
+    1, -1.482983, 1.322511, 0.577094,
+    .522511, -0.506787, 0.694046, -2.049487
+)
+df[nrow(df) + 1, ] <- c(
+    1, 0.908600, 1.322511, -0.251478,
+    0.552714, -0.506787, -0.503620, 0.519588
+)
+df[nrow(df) + 1, ] <- c(
+    1, -1.482983, 1.322511, 0.369951,
+    0.522511, -0.506787, 0.350326, 0.519588
+)
+df[nrow(df) + 1, ] <- c(
+    0, 0.908600, -0.756138, 0.369951,
+    -0.552714, -0.506787, -0.501257, 0.519588
+)
+df[nrow(df) + 1, ] <- c(
+    0, -1.482983, -0.756138, 1.681856,
+    -0.552714, -0.506787, 0.326933, 0.519588
+)
 
 kable(head(df, 5))
 ```
@@ -118,12 +133,45 @@ kable(head(df, 5))
 - RFE (Recursive Feature Elimination) with LR, RFC
 - Selected features:
     - for LR: **Pclass**, **Sex**, **Age**, **SibSp**
+    - <br/><br/>
+
+```{r "Feature selection graphs lr", echo=FALSE, out.width="50%", fig.align = "left", fig.show='hold', fig.cap=" "}
+knitr::include_graphics(
+    c(
+        "./lr_number_of_features.png"
+    )
+)
+```    
+
+## Feature Selection
+
+- RFE (Recursive Feature Elimination) with LR, RFC
+- Selected features:
+    - <br/>
     - for RFC: **Pclass**, **Sex**, **Age**, **Fare**
+    
+```{r "Feature selection graphs rf", echo=FALSE, out.width="50%", fig.align = "right", fig.show='hold', fig.cap=" "}
+knitr::include_graphics(
+    c(
+        "./rf_number_of_features.png"
+    )
+)
+```
+
+## Feature Selection
+
+
+- RFE (Recursive Feature Elimination) with LR, RFC
+- Selected features:
+    - for LR (plot on the left): **Pclass**, **Sex**, **Age**, **SibSp**
+    - for RFC (plot on the right): **Pclass**, **Sex**, **Age**, **Fare**
     
 ```{r "Feature selection graphs", echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', fig.cap=" "}
 knitr::include_graphics(
-  c("./lr_number_of_features.png",
-    "./rf_number_of_features.png")
+    c(
+        "./lr_number_of_features.png",
+        "./rf_number_of_features.png"
+    )
 )
 ```
 
@@ -148,18 +196,20 @@ knitr::include_graphics(
 
 ```{r "Classifiers after preprocessing", fig.align="center", message=F, echo=F, fig.height=4, fig.width=8, warning=F}
 scores <- data.frame(
-    score_before = c(64.35, 91.24, 80.97),
-    score = c(90.94, 90.94, 87.01),
-    classifier = c("SVC", "LRC", "RFC"))
+    score_before = c(64.35, 65.65, 80.36),
+    score = c(90.94, 90.94, 87.5),
+    classifier = c("SVC", "LRC", "RFC")
+)
 
 scores_long <- gather(scores, key = "type", value = "score", -classifier)
 scores_long$type <- factor(scores_long$type, levels = c("score_before", "score"))
 
-ggplot(scores_long, aes(x=classifier, y=score, fill=type)) +
-    geom_bar(stat="identity", position="dodge", width=0.5) +
-    geom_text(aes(label=paste0(score, "%"), y=score), position=position_dodge(width=0.5), vjust=-0.5, size=3.5, color="black") +
-    labs(title="Classifier Scores", x="Classifier", y="Accuracy") +
-    scale_fill_manual(values=c("score_before"="skyblue", "score"="lightgreen"), labels=c("Before", "After")) +
+ggplot(scores_long, aes(x = classifier, y = score, fill = type)) +
+    geom_bar(stat = "identity", position = "dodge", width = 0.5) +
+    geom_text(aes(label = paste0(score, "%"), y = score), position = position_dodge(width = 0.5), vjust = -0.5, size = 3.5, color = "black") +
+    labs(title = "Classifier Scores", x = "Classifier", y = "Accuracy") +
+    ylim(c(0, 100)) +
+    scale_fill_manual(values = c("score_before" = "skyblue", "score" = "lightgreen"), labels = c("Before", "After")) +
     theme_minimal()
 ```
 
