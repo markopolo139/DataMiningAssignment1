@@ -15,7 +15,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.svm import SVC
 
-random_state = 5673469
+random_state = 156042
+
+def copy_data(data):
+    return copy.deepcopy(data)
+
 
 def load_data():
     """
