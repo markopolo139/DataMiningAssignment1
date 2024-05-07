@@ -80,7 +80,7 @@ $ pip freeze > Requirements.txt to get the requirements and later above command
 - **Data Preprocessing**:
     - *Handling Missing Values*: Dropped columns with no relevant information and removed rows with missing values, considering the importance of features in the dataset.
     - *Encoding Categorical Variables*: Converted categorical variables like 'Sex' and 'Embarked' into numerical labels for machine learning algorithms to process.
-    - *Normalization and Standardization*: Performed data scaling using MinMaxScaler and StandardScaler to ensure all features are on a similar scale.
+    - *Normalization and Standardization*: We tested both preprocessing techniques and we decided to perform the data scaling using StandardScaler over the MinMaxScaler.
 
 - **Feature Selection**: Recursive Feature Elimination (RFE): Used RFE with Logistic Regression and Random Forest Classifier to select the most important features for prediction.
 

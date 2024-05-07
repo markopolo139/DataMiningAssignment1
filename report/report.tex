@@ -63,7 +63,7 @@ Converted categorical variables like 'Sex' and 'Embarked' into numerical labels 
 
 \subsection{Normalization and standarization}
 
-Performed data scaling using MinMaxScaler and StandardScaler to ensure all features are on a similar scale.
+We tested both preprocessing techniques and we decided to perform the data scaling using StandardScaler over the MinMaxScaler.
 
 \section{Description of the output features}
 
@@ -94,7 +94,7 @@ To finalize we checked the trained models to predict the survival outcomes of pa
 Classifier  & Accuracy on the test dataset\\
 \hline
 SVC                  & 90.93\% \\
-Random Forest        & 85.19\% \\
+Random Forest        & 85.49\% \\
 Logistic Regression  & 90.93\% \\
 \hline
 \end{tabular}
